@@ -32,7 +32,7 @@ def startClient(host, port):
     print('Started Video Streaming at :', starttime.strftime('%I:%M:%S'), starttime.strftime('%d-%m-%Y'))
 
     frame_count = 0
-    fd = open('UDP/client_udp_fps.txt', 'a')
+    fd = open('result/client_udp_fps.txt', 'w')
     previousTime = datetime.now()
 
     while True:

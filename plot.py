@@ -9,14 +9,14 @@ def plot(fps, time):
 
     # plotting the points
     color = ["green", "red", "blue"]
-    marker = ['o', '+', '*']
-    labels = ['MPTCP', 'UDP', 'Default']
+    marker = ['*', 'o', 'o']
+    labels = ['UDP', 'MPTCP (3 Subflows)', 'MPTCP (3 Subflows)']
     for i in range(0, len(fps)):
         plt.plot(time[i], fps[i], color=color[i], label=labels[i], linewidth = 1,
                 marker=marker[i], markerfacecolor='blue', markersize=5)
     
     # setting x and y axis range
-    plt.ylim(9, 11)
+    plt.ylim(13, 15.5)
     plt.xlim(0, 55)
     
     # naming the x axis

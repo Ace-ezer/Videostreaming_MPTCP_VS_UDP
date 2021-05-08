@@ -22,7 +22,7 @@ def startClient(host, port, num_paths):
     frame_count = 0
 
     previousTime = datetime.now()
-    fd = open('MPTCP/client_mptcp_fps'+num_paths+'.txt', 'a')
+    fd = open('result/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
     while True:
         while len(data) < payload_size:
             packet = sock.recv(4*1024) # 4K
