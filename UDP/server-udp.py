@@ -14,7 +14,7 @@ class FrameSegment(object):
     Object to break down image frame segment
     if the size of image exceed maximum datagram size 
     """
-    MAX_DGRAM = 2**12
+    MAX_DGRAM = 2**16
     MAX_IMAGE_DGRAM = MAX_DGRAM - 64 # extract 64 bytes in case UDP frame overflown
     def __init__(self, sock, port, addr):
         self.sock = sock

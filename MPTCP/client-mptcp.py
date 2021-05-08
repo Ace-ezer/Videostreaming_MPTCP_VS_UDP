@@ -25,7 +25,7 @@ def startClient(host, port, num_paths):
     fd = open('result/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
     while True:
         while len(data) < payload_size:
-            packet = sock.recv(4*1024) # 4K
+            packet = sock.recv(64*1024) # 4K
             if not packet: break
             data+=packet
             
