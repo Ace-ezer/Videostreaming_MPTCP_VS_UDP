@@ -6,7 +6,7 @@ import struct
 import argparse
 from datetime import datetime
 
-MAX_DGRAM = 2**16
+MAX_DGRAM = 2**12
 
 def dump_buffer(s):
     """ Emptying buffer frame """
@@ -17,7 +17,7 @@ def dump_buffer(s):
             print("finish emptying buffer")
             break
 
-def startClient(host, port):
+def startClient(host, port, dsize):
     """ Getting image udp frame &
     concate before decode and output image """
     
@@ -32,7 +32,7 @@ def startClient(host, port):
     print('Started Video Streaming at :', starttime.strftime('%I:%M:%S'), starttime.strftime('%d-%m-%Y'))
 
     frame_count = 0
-    fd = open('result/client_udp_fps.txt', 'w')
+    fd = open('result/res'+str(dsize)+'/client_udp_fps.txt', 'w')
     previousTime = datetime.now()
 
     while True:
@@ -63,7 +63,9 @@ def startClient(host, port):
     endtime = datetime.now()
     print('Ended video streaming at: ', endtime.strftime('%I:%M:%S'), endtime.strftime('%d-%m-%Y'))
     print('Frames Received from server: ', frame_count)
-    print('  FPS (Frames Per Second): ', frame_count/(endtime - starttime).total_seconds())
+    fps_avg = frame_count/(endtime - starttime).total_seconds()
+    print('  FPS (Frames Per Second): ', fps_avg)
+    fd.writelines('Average '+str(fps_avg))
     fd.close()
     cv2.destroyAllWindows()
     sock.close()
@@ -74,5 +76,6 @@ if __name__ == "__main__":
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
     args = parser.parse_args()
-    startClient(args.host, args.p)
+    startClient(args.host, args.p, args.d)

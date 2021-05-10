@@ -9,14 +9,14 @@ def plot(fps, time):
 
     # plotting the points
     color = ["green", "red", "blue"]
-    marker = ['*', 'o', 'o']
-    labels = ['UDP', 'MPTCP (3 Subflows)', 'MPTCP (3 Subflows)']
+    marker = ['o', '+', '*']
+    labels = ['UDP', 'MPTCP (2 Subflows)', 'MPTCP (3 Subflows)']
     for i in range(0, len(fps)):
         plt.plot(time[i], fps[i], color=color[i], label=labels[i], linewidth = 1,
-                marker=marker[i], markerfacecolor='blue', markersize=5)
+                marker=marker[i], markersize=5)
     
     # setting x and y axis range
-    plt.ylim(13, 15.5)
+    plt.ylim(6.5, 10.2)
     plt.xlim(0, 55)
     
     # naming the x axis
@@ -25,7 +25,7 @@ def plot(fps, time):
     plt.ylabel('FPS (Frames per second)')
     
     # giving a title to my graph
-    plt.title('Comparison MPTCP Vs UDP')
+    plt.title('Comparison MPTCP (2 Subflows) Vs MPTCP (3 Subflows) Vs UDP (Resolution: 480 X 480)')
     # function to show the plot
     plt.legend()
     plt.show()
@@ -45,8 +45,9 @@ def readFile(filenames):
                     break
 
                 line = line.strip().split(' ')
-                fps_tmp.append(float(line[0]))
-                time_tmp.append(float(line[1]))
+                if(line[0] != "Average"):
+                    fps_tmp.append(float(line[0]))
+                    time_tmp.append(float(line[1]))
         fd.close()
         fps.append(fps_tmp)
         time.append(time_tmp)

@@ -6,7 +6,7 @@ import struct
 import argparse
 from datetime import datetime
 
-def startClient(host, port, num_paths):
+def startClient(host, port, dsize, num_paths):
     # create socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -22,7 +22,7 @@ def startClient(host, port, num_paths):
     frame_count = 0
 
     previousTime = datetime.now()
-    fd = open('result/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
+    fd = open('result/res'+str(dsize)+'/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
     while True:
         while len(data) < payload_size:
             packet = sock.recv(64*1024) # 4K
@@ -60,7 +60,9 @@ def startClient(host, port, num_paths):
     endtime = datetime.now()
     print('Ended video streaming at: ', endtime.strftime('%I:%M:%S'), endtime.strftime('%d-%m-%Y'))
     print('Frames Received from server: ', frame_count)
-    print('  FPS (Frames Per Second): ', frame_count/(endtime - starttime).total_seconds())
+    fps_avg = frame_count/(endtime - starttime).total_seconds()
+    print('  FPS (Frames Per Second): ', fps_avg)
+    fd.writelines('Average '+str(fps_avg))
     fd.close()
     cv2.destroyAllWindows()
     sock.close()
@@ -72,6 +74,7 @@ if __name__ == '__main__':
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
     parser.add_argument('num_paths', type=int)
     args = parser.parse_args()
-    startClient(args.host, args.p, args.num_paths)
+    startClient(args.host, args.p, args.d, args.num_paths)

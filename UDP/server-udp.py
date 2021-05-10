@@ -14,7 +14,7 @@ class FrameSegment(object):
     Object to break down image frame segment
     if the size of image exceed maximum datagram size 
     """
-    MAX_DGRAM = 2**16
+    MAX_DGRAM = 2**12
     MAX_IMAGE_DGRAM = MAX_DGRAM - 64 # extract 64 bytes in case UDP frame overflown
     def __init__(self, sock, port, addr):
         self.sock = sock
@@ -41,7 +41,7 @@ class FrameSegment(object):
             count -= 1
 
 
-def startServer(host, port):
+def startServer(host, port, dsize):
     """ Top level main function """
     # Set up UDP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -57,6 +57,7 @@ def startServer(host, port):
     previousTime = datetime.now()
     while (cap.isOpened() and frame_count < MAX_LIMIT):
         _, frame = cap.read()
+        frame = cv2.resize(frame, (dsize,dsize), fx=0, fy=0, interpolation = cv2.INTER_CUBIC)
         frame = cv2.flip(frame, 1)
         fs.udp_frame(frame)
         frame_count += 1
@@ -85,5 +86,6 @@ if __name__ == "__main__":
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
     args = parser.parse_args()
-    startServer(args.host, args.p)
+    startServer(args.host, args.p, args.d)
