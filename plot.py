@@ -16,8 +16,8 @@ def plot(fps, time):
                 marker=marker[i], markersize=5)
     
     # setting x and y axis range
-    plt.ylim(6.5, 10.2)
-    plt.xlim(0, 55)
+    plt.ylim(0, 15)
+    plt.xlim(0, 250)
     
     # naming the x axis
     plt.xlabel('Time elapsed (in sec)')
@@ -25,7 +25,7 @@ def plot(fps, time):
     plt.ylabel('FPS (Frames per second)')
     
     # giving a title to my graph
-    plt.title('Comparison MPTCP (2 Subflows) Vs MPTCP (3 Subflows) Vs UDP (Resolution: 480 X 480)')
+    plt.title('Comparison MPTCP (2 Subflows) VS MPTCP (3 Subflows) VS UDP (Resolution: 1080p)')
     # function to show the plot
     plt.legend()
     plt.show()

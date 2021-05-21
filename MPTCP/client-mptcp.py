@@ -22,7 +22,7 @@ def startClient(host, port, dsize, num_paths):
     frame_count = 0
 
     previousTime = datetime.now()
-    fd = open('result/res'+str(dsize)+'/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
+    fd = open('resultpro/res'+str(dsize[1])+'/client_mptcp_fps'+str(num_paths)+'.txt', 'w')
     while True:
         while len(data) < payload_size:
             packet = sock.recv(64*1024) # 4K
@@ -74,7 +74,7 @@ if __name__ == '__main__':
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
-    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
-    parser.add_argument('num_paths', type=int)
+    parser.add_argument('-np', type=int)
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution', nargs="+")
     args = parser.parse_args()
-    startClient(args.host, args.p, args.d, args.num_paths)
+    startClient(args.host, args.p, args.d, args.np)

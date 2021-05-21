@@ -10,7 +10,7 @@ import imutils
 import argparse
 from datetime import datetime
 
-MAX_FRAME_LIMIT = 500
+MAX_FRAME_LIMIT = 200
 
 def startServer(host, port, dsize):
     # Socket Create
@@ -46,7 +46,7 @@ def startServer(host, port, dsize):
             while(cap.isOpened() and frame_count < MAX_FRAME_LIMIT):
                 img,frame = cap.read()
                 frame = cv2.flip(frame, 1)
-                frame = cv2.resize(frame, (dsize,dsize), fx=0, fy=0, interpolation = cv2.INTER_CUBIC) #imutils.resize(frame,width=480, height=480, inter=cv2.INTER_CUBIC)
+                frame = cv2.resize(frame, (dsize[0],dsize[1]), fx=0, fy=0, interpolation = cv2.INTER_CUBIC)
                 a = pickle.dumps(frame)
                 message = struct.pack("Q",len(a))+a
                 conn.sendall(message)
@@ -78,6 +78,6 @@ if __name__ == "__main__":
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
-    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution', nargs="+")
     args = parser.parse_args()
     startServer(args.host, args.p, args.d)

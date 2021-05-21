@@ -32,7 +32,7 @@ def startClient(host, port, dsize):
     print('Started Video Streaming at :', starttime.strftime('%I:%M:%S'), starttime.strftime('%d-%m-%Y'))
 
     frame_count = 0
-    fd = open('result/res'+str(dsize)+'/client_udp_fps.txt', 'w')
+    fd = open('resultpro/res'+str(dsize[1])+'/client_udp_fps.txt', 'w')
     previousTime = datetime.now()
 
     while True:
@@ -76,6 +76,6 @@ if __name__ == "__main__":
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
-    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution', nargs="+")
     args = parser.parse_args()
     startClient(args.host, args.p, args.d)

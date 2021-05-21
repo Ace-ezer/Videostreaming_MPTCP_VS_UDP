@@ -3,11 +3,12 @@ import cv2
 import numpy as np
 import socket
 import struct
+import imutils
 import math
 import argparse
 from datetime import datetime
 
-MAX_LIMIT = 500
+MAX_LIMIT = 200
 
 class FrameSegment(object):
     """ 
@@ -52,12 +53,12 @@ def startServer(host, port, dsize):
 
     starttime = datetime.now()
     print('  Started Video Streaming at :', starttime.strftime('%I:%M:%S'), starttime.strftime('%d-%m-%Y'))
-
+    print(dsize[0], dsize[1])
     frame_count = 0
     previousTime = datetime.now()
     while (cap.isOpened() and frame_count < MAX_LIMIT):
         _, frame = cap.read()
-        frame = cv2.resize(frame, (dsize,dsize), fx=0, fy=0, interpolation = cv2.INTER_CUBIC)
+        frame = cv2.resize(frame, (dsize[0],dsize[1]), fx=0, fy=0, interpolation = cv2.INTER_CUBIC) #imutils.resize(frame,width=dsize[0], height=dsize[1], inter=cv2.INTER_CUBIC)
         frame = cv2.flip(frame, 1)
         fs.udp_frame(frame)
         frame_count += 1
@@ -86,6 +87,6 @@ if __name__ == "__main__":
                         ' host the client sends to')
     parser.add_argument('-p', metavar='PORT', type=int, default=8080,
                         help='TCP port (default 8080)')
-    parser.add_argument('-d', type=int, default=720, help='Frame resolution')
+    parser.add_argument('-d', type=int, default=720, help='Frame resolution', nargs="+")
     args = parser.parse_args()
     startServer(args.host, args.p, args.d)
